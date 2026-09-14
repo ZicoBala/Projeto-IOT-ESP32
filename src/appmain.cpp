@@ -1,4 +1,4 @@
-#include "DHT.h"
+#include <DHT.h>
 #include <stdio.h>
 
 #define DHTPIN 4
@@ -40,6 +40,7 @@ void loop() {
   
   if (isnan(umidade) || isnan(temperatura) || (temperatura == 0) & (umidade == 0)) {
     Serial.println("Falha ao ler dados do sensor DHT22!");
+    return;
   } else {
     Serial.println("Temperatura: ");
     Serial.println(temperatura);
