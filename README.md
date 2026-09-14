@@ -5,6 +5,7 @@
 
 Este projeto usa o PlatformIO. Antes de iniciar o simulador, compile o firmware
 pela extensão do PlatformIO no VS Code ou execute:
+OBS: SE CERTIFIQUE DE QUE ESTÁ NA PASTA CORRETA
 
 ```text
 pio run
