@@ -79,16 +79,16 @@ void loop() {
   }
 
 
-char jsonBuffer[100];
- 
-Serial.print(jsonBuffer, "{\"temperatura\":%.2f,\"umidade\":%.2f,\"temperaturaMaxima\":%.2f,\"ALERTA_TEMPERATURA\":true}", temperatura, umidade, temperaturaMaxima, ALERTA_TEMPERATURA);
- 
+char jsonBuffer[128];
+snprintf(jsonBuffer, sizeof(jsonBuffer),
+         "{\"temperatura\":%.2f,\"umidade\":%.2f,\"temperaturaMaxima\":%.2f,\"ALERTA_TEMPERATURA\":%s}", temperatura, umidade, temperaturaMaxima, ALERTA_TEMPERATURA ? "true" : "false");
+
 Serial.println(temperatura);
 Serial.println(umidade);
 Serial.println(temperaturaMaxima);
 Serial.println(LIMITE_TEMPERATURA);
 
-Serial.printf("A temperatura, a umidade, a temperatura máxima e o alerta são: %.2f°C, %.2f%%, %.2f°C, %.2f\\n", temperatura, umidade, temperaturaMaxima, ALERTA_TEMPERATURA);
+Serial.printf("A temperatura, a umidade, a temperatura máxima e o alerta são: %.2f°C, %.2f%%, %.2f°C, %s\n", temperatura, umidade, temperaturaMaxima, ALERTA_TEMPERATURA ? "true" : "false");
 Serial.print("JSON Gerado: ");
 Serial.println(jsonBuffer);
 Serial.println("---");
