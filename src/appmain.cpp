@@ -9,8 +9,8 @@ DHT sensor(DHTPIN, DHTTYPE);
 
 float temperaturaMinima = 999;
 float temperaturaMaxima = -999;
-bool ALERTA_TEMPERATURA = 0;
-float historicoTemperatura[6] = {0.0, 0.0, 0.0, 0.0, 0.0};
+bool ALERTA_TEMPERATURA = false;
+float historicoTemperatura[5] = {0.0, 0.0, 0.0, 0.0, 0.0};
 
 void setup() {
   Serial.begin(115200);
@@ -26,7 +26,7 @@ void addHistorico(float novaTemp) {
 
 void mostrarTemperaturas() {
    Serial.println("Últimas 5 temperaturas registradas:");
-    for (int i = 0; i > 5; i++) {
+    for (int i = 0; i < 5; i++) {
       Serial.print(historicoTemperatura[i]);
       Serial.print(" °C | "); 
       } 
@@ -39,7 +39,7 @@ void loop() {
 
   
   if (isnan(umidade) || isnan(temperatura) || (temperatura == 0) & (umidade == 0)) {
-    Serial.println("Falha ao ler dados do sensor DHT22!");
+    Serial.println("Falha ao ler dados do sensor DHT11!");
     return;
   } else {
     Serial.println("Temperatura: ");
@@ -75,8 +75,23 @@ void loop() {
      Serial.println(temperatura);
      Serial.println("------");
   } else {
-    ALERTA_TEMPERATURA == false;
+    ALERTA_TEMPERATURA = false;
   }
+
+
+char jsonBuffer[128];
+snprintf(jsonBuffer, sizeof(jsonBuffer),
+         "{\"temperatura\":%.2f,\"umidade\":%.2f,\"temperaturaMaxima\":%.2f,\"ALERTA_TEMPERATURA\":%s}", temperatura, umidade, temperaturaMaxima, ALERTA_TEMPERATURA ? "true" : "false");
+
+Serial.println(temperatura);
+Serial.println(umidade);
+Serial.println(temperaturaMaxima);
+Serial.println(LIMITE_TEMPERATURA);
+
+Serial.printf("A temperatura, a umidade, a temperatura máxima e o alerta são: %.2f°C, %.2f%%, %.2f°C, %s\n", temperatura, umidade, temperaturaMaxima, ALERTA_TEMPERATURA ? "true" : "false");
+Serial.print("JSON Gerado: ");
+Serial.println(jsonBuffer);
+Serial.println("---");
 
 delay(5000);
 }
